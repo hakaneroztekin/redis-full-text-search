@@ -1,4 +1,5 @@
 const express = require("express");
+var responseTime = require('response-time')
 var fs = require('fs');
 const redis = require("redis");
 const axios = require("axios");
@@ -6,7 +7,8 @@ const axios = require("axios");
 const app = express();
 const port = 3002;
 
-app.use(function(req, res, next) {
+app.use(responseTime())
+app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
@@ -23,8 +25,10 @@ function getAllStudents() {
 
 app.get("/students/:name", (req, res) => {
     console.log("Student search requested for name " + req.params.name);
-    let matchingStudents = []
-    matchingStudents.push(getAllStudents().find(student => student.firstName === req.params.name));
+    let matchingStudents = getAllStudents().filter(student => student.firstName === req.params.name);
+    if (matchingStudents == null) {
+        return;
+    }
     matchingStudents.forEach(student => student.label = student.firstName);
     console.log("Matching students:")
     console.log(matchingStudents)

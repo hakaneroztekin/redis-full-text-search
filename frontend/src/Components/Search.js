@@ -3,6 +3,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 
 import {Component} from "react";
 
+// todo remove
 const top100Films = [
     {label: 'The Shawshank Redemption', year: 1994},
 ];
@@ -12,6 +13,7 @@ class Search extends Component {
         super(props);
         this.state = {
             studentList: [],
+            responseTime: 0,
         };
     }
 
@@ -24,9 +26,12 @@ class Search extends Component {
         fetch('http://localhost:3002/students/' + name)
             .then(response => response.json())
             .then((response) => {
-                this.setState({studentList: response})
+                this.setState({
+                    studentList: response,
+                    // todo update
+                    //  responseTime: response.headers.get('X-Response-Time')
+                })
             });
-        console.log(this.state.studentList)
     }
 
     componentDidMount() {
