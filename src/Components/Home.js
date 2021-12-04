@@ -3,6 +3,7 @@ import NavBar from "./NavBar";
 import BackgroundImage from '../Images/background.png';
 
 import {Paper} from "@material-ui/core";
+import Search from "./Search";
 
 const styles = {
     paperContainer: {
@@ -16,7 +17,7 @@ const Home = () => {
     return(
             <Paper style={styles.paperContainer}>
                 <NavBar />
-                Text
+                <Search />
             </Paper>
     )
 }
