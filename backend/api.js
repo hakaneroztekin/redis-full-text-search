@@ -50,7 +50,11 @@ async function getAllStudents() {
         }
         console.log("Students cache not found, parsing.")
         return JSON.parse(fs.readFileSync('resources/students.json', 'utf8'));
-    }));
+    })).then(students => {
+        // add label
+        students.forEach(student => student.label = "[" + student.id + "] " + student.firstName + " " + student.lastName);
+        return students;
+    });
 }
 
 app.get("/students/:name", async (req, res) => {
@@ -64,14 +68,14 @@ app.get("/students/:name", async (req, res) => {
         return res.send()
     }
 
-    matchingStudents.forEach(student => student.label = student.firstName + " " + student.lastName);
     console.log("Matching students:")
     console.log(matchingStudents)
     return res.send(matchingStudents)
 })
 
-app.get("/students/", (req, res) => {
+app.get("/students/", async (req, res) => {
     console.log("All students are requested");
 
-    return res.send(getAllStudents());
+    let allStudents = await getAllStudents();
+    return res.send(allStudents);
 })

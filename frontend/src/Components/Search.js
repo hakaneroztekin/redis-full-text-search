@@ -9,7 +9,7 @@ class Search extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            studentList: [],
+            matchingStudents: [],
             responseTime: 0,
         };
     }
@@ -29,7 +29,7 @@ class Search extends Component {
             })
             .then((response) => {
                 this.setState({
-                    studentList: response
+                    matchingStudents: response
                 });
                 console.log("this.state")
                 console.log(this.state)
@@ -37,14 +37,17 @@ class Search extends Component {
     }
 
     componentDidMount() {
-        /* todo update
         fetch('http://localhost:3002/students/')
-            .then(response => response.json())
+            .then(response => {
+                this.setState({
+                    responseTime: response.headers.get('X-Response-Time')
+                });
+                return response.json()
+            })
             .then((response) => {
-                this.setState({studentList : response})
-               // console.log(this.state.studentList);
+                this.setState({matchingStudents: response})
+                // console.log(this.state.matchingStudents);
             });
-         */
     }
 
 
@@ -62,13 +65,13 @@ class Search extends Component {
 
                     <Grid item xs={4}>
                         <Typography inline>Response time: {this.state.responseTime}</Typography>
-                        <Typography inline>Match count: {this.state.studentList.length}</Typography>
+                        <Typography inline>Match count: {this.state.matchingStudents.length}</Typography>
                     </Grid>
                     <Grid item xs={8}>
                         <Autocomplete
                             disablePortal
                             id="search-student"
-                            options={this.state.studentList}
+                            options={this.state.matchingStudents}
                             onInputChange={(event, newInputValue) => {
                                 this.searchStudent(newInputValue)
                             }}
