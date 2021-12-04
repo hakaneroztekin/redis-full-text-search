@@ -42,14 +42,15 @@ app.listen(port, () => {
 
 // mimicking 3rd party API call
 async function getAllStudents() {
-    return await redisClient.get("students").then((response => {
+    return await redisClient.get("allStudents").then((response => {
         if (response) {
             console.log("Students cache found, returning.")
-            console.log(response)
-            return []; // todo update
+            return JSON.parse(response);
         }
-        console.log("Students cache not found, parsing.")
-        return JSON.parse(fs.readFileSync('resources/students.json', 'utf8'));
+        console.log("Students cache not found, parsing and caching.")
+        let students = JSON.parse(fs.readFileSync('resources/students.json', 'utf8'));
+        redisClient.set("allStudents", JSON.stringify(students));
+        return students;
     })).then(students => {
         // add label
         students.forEach(student => student.label = "[" + student.id + "] " + student.firstName + " " + student.lastName);
