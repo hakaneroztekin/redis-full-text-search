@@ -1,6 +1,8 @@
 const express = require("express");
 var responseTime = require('response-time')
 var fs = require('fs');
+var cors = require('cors')
+
 const redis = require("redis");
 const axios = require("axios");
 
@@ -8,9 +10,12 @@ const app = express();
 const port = 3002;
 
 app.use(responseTime())
+
+// allow cors, not recommended in production
+app.use(cors());
+
 app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Expose-Headers", "X-Response-Time");
     next();
 });
 

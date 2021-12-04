@@ -24,13 +24,18 @@ class Search extends Component {
         }
 
         fetch('http://localhost:3002/students/' + name)
-            .then(response => response.json())
+            .then(response => {
+                this.setState({
+                    responseTime: response.headers.get('X-Response-Time')
+                });
+                return response.json()
+            })
             .then((response) => {
                 this.setState({
-                    studentList: response,
-                    // todo update
-                    //  responseTime: response.headers.get('X-Response-Time')
-                })
+                    studentList: response
+                });
+                console.log("this.state")
+                console.log(this.state)
             });
     }
 
@@ -52,10 +57,15 @@ class Search extends Component {
                 <Grid
                     container
                     spacing={4}
+                    columns={1}
                     alignItems="center"
                     justifyContent="center"
                     style={{minHeight: '100vh'}}
                 >
+
+                    <Grid item xs={3}>
+                        Response time: {this.state.responseTime}
+                    </Grid>
                     <Grid item xs={6}>
                         <Autocomplete
                             disablePortal
