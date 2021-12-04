@@ -16,16 +16,23 @@ app.listen(port, () => {
     console.log("Backend is up and ready to go.")
 })
 
+// mimicking 3rd party API call
+function getAllStudents() {
+    return JSON.parse(fs.readFileSync('resources/students-small.json', 'utf8'));
+}
+
 app.get("/students/:name", (req, res) => {
-    console.log("Student search requested for name ");
-    console.log(req.params.name)
+    console.log("Student search requested for name " + req.params.name);
+    let matchingStudents = []
+    matchingStudents.push(getAllStudents().find(student => student.firstName === req.params.name));
+    matchingStudents.forEach(student => student.label = student.firstName);
+    console.log("Matching students:")
+    console.log(matchingStudents)
+    return res.send(matchingStudents)
 })
 
 app.get("/students/", (req, res) => {
     console.log("All students are requested");
 
-    // executing sync call, mimicking 3rd party API call
-    var students = JSON.parse(fs.readFileSync('resources/students-small.json', 'utf8'));
-
-    return res.send(students);
+    return res.send(getAllStudents());
 })
