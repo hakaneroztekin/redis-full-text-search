@@ -1,4 +1,4 @@
-import {Box, Grid, TextField} from "@material-ui/core";
+import {Grid, Paper, TextField} from "@material-ui/core";
 import Autocomplete from '@mui/material/Autocomplete';
 
 import {Component} from "react";
@@ -64,7 +64,11 @@ class Search extends Component {
                             onInputChange={(event, newInputValue) => {
                                 this.searchStudent(newInputValue)
                             }}
+                            PaperComponent={({children}) => (
+                                <Paper style={{background: "#E2DCDE"}}>{children}</Paper>
+                            )}
                             renderInput={(params) => <TextField {...params}/>}
+                            noOptionsText="Type text to search"
                         />
                     </Grid>
                 </Grid>
