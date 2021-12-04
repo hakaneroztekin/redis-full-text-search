@@ -2,11 +2,8 @@ import {Grid, Paper, TextField} from "@material-ui/core";
 import Autocomplete from '@mui/material/Autocomplete';
 
 import {Component} from "react";
+import Typography from "@material-ui/core/Typography";
 
-// todo remove
-const top100Films = [
-    {label: 'The Shawshank Redemption', year: 1994},
-];
 
 class Search extends Component {
     constructor(props) {
@@ -56,17 +53,18 @@ class Search extends Component {
             <div>
                 <Grid
                     container
-                    spacing={4}
-                    columns={1}
+                    spacing={5}
+                    direction="row"
                     alignItems="center"
                     justifyContent="center"
                     style={{minHeight: '100vh'}}
                 >
 
-                    <Grid item xs={3}>
-                        Response time: {this.state.responseTime}
+                    <Grid item xs={4}>
+                        <Typography inline>Response time: {this.state.responseTime}</Typography>
+                        <Typography inline>Match count: {this.state.studentList.length}</Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={8}>
                         <Autocomplete
                             disablePortal
                             id="search-student"
@@ -79,6 +77,7 @@ class Search extends Component {
                             )}
                             renderInput={(params) => <TextField {...params}/>}
                             noOptionsText="Type text to search"
+                            sx={{width: "50vh"}}
                         />
                     </Grid>
                 </Grid>
