@@ -20,16 +20,16 @@ app.listen(port, () => {
 
 // mimicking 3rd party API call
 function getAllStudents() {
-    return JSON.parse(fs.readFileSync('resources/students-small.json', 'utf8'));
+    return JSON.parse(fs.readFileSync('resources/students.json', 'utf8'));
 }
 
 app.get("/students/:name", (req, res) => {
     console.log("Student search requested for name " + req.params.name);
-    let matchingStudents = getAllStudents().filter(student => student.firstName === req.params.name);
+    let matchingStudents = getAllStudents().filter(student => student.firstName.toLowerCase().includes(req.params.name));
     if (matchingStudents == null) {
         return;
     }
-    matchingStudents.forEach(student => student.label = student.firstName);
+    matchingStudents.forEach(student => student.label = student.firstName + " " + student.lastName);
     console.log("Matching students:")
     console.log(matchingStudents)
     return res.send(matchingStudents)
