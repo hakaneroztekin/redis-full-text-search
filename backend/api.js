@@ -4,7 +4,8 @@ var fs = require('fs');
 var cors = require('cors')
 
 const redis = require("redis");
-const axios = require("axios");
+
+let redisClient;
 
 const app = express();
 const port = 3002;
@@ -20,20 +21,49 @@ app.use(function (req, res, next) {
 });
 
 app.listen(port, () => {
-    console.log("Backend is up and ready to go.")
+    // connect to redis
+    redisClient = redis.createClient({
+        host: process.env["redis.host"],
+        port: process.env["redis.port"],
+        // todo update
+        // password: process.env["redis.password"]
+    });
+    redisClient.connect();
+
+    redisClient.on('connect', () => {
+        console.log("Redis is connected.");
+    });
+    redisClient.on('error', err => {
+        console.log('Redis is failed to connect. Error ' + err);
+    });
+
+    console.log("API is up and ready to go.")
 })
 
 // mimicking 3rd party API call
-function getAllStudents() {
-    return JSON.parse(fs.readFileSync('resources/students.json', 'utf8'));
+async function getAllStudents() {
+    return await redisClient.get("students").then((response => {
+        if (response) {
+            console.log("Students cache found, returning.")
+            console.log(response)
+            return []; // todo update
+        }
+        console.log("Students cache not found, parsing.")
+        return JSON.parse(fs.readFileSync('resources/students.json', 'utf8'));
+    }));
 }
 
-app.get("/students/:name", (req, res) => {
+app.get("/students/:name", async (req, res) => {
     console.log("Student search requested for name " + req.params.name);
-    let matchingStudents = getAllStudents().filter(student => student.firstName.toLowerCase().includes(req.params.name));
-    if (matchingStudents == null) {
-        return;
+    let matchingStudents = await getAllStudents();
+    matchingStudents = matchingStudents.filter(function (student) {
+        // search in all fields of a student object
+        return Object.values(student).find(value => String(value).toLowerCase().includes(req.params.name.toLowerCase()));
+    });
+    if (matchingStudents.length === 0) {
+        return res.send()
     }
+
     matchingStudents.forEach(student => student.label = student.firstName + " " + student.lastName);
     console.log("Matching students:")
     console.log(matchingStudents)
