@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/hakaneroztekin/redis-full-text-search#readme",
   "dependencies": {
+    "@mui/x-data-grid": "^5.1.0",
     "axios": "^0.24.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
