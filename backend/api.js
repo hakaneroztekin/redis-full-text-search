@@ -24,9 +24,7 @@ app.listen(port, () => {
     // connect to redis
     redisClient = redis.createClient({
         host: process.env["redis.host"],
-        port: process.env["redis.port"],
-        // todo update
-        // password: process.env["redis.password"]
+        port: process.env["redis.port"]
     });
     redisClient.connect();
 
