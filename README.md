@@ -29,4 +29,4 @@ A simple app that searches user provided keyword among informations of a thousan
 ### how to use
 
 - Set environment variables `redis.host` and `redis.port` for your Redis (either local or cloud).
-- Then run backend and frontend projects
+- Then run backend and frontend projects.
