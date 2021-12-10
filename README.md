@@ -23,8 +23,8 @@ A simple app that searches user provided keyword among informations of a thousan
 
 **notes on Redis Full Text Search (FTS)**
 
-- Redis provides in-built FTS feature with RediSearch module. I tried to implement it for better comparison. Yet, its'
-  NodeJS libraries are so erroneous, lack of documentation and ease of use.
+- Redis provides in-built FTS feature with RediSearch module. I tried to implement it for a better comparison. Yet, its'
+  NodeJS libraries are so erroneous, lack proper documentation and hard to use made it impossible. So it's better to look an alternative like Elasticsearch if you want to have FTS with NodeJS.
 
 ### how to use
 
