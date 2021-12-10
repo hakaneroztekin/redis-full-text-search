@@ -1,6 +1,6 @@
 ## full text search
 
-A simple app that searches user provided keyword among information of a thousand student.
+A simple app that searches user provided keyword among informations of a thousand student.
 ![screenshot](screenshot.png)
 
 ### design & tech
